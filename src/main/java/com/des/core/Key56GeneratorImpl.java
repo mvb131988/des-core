@@ -1,11 +1,13 @@
 package com.des.core;
 
-//TODO: Change definition for key56 from byte to block, cause each block consist only of 7 bits.
+/**
+ *	Generate 56 bits key based on original key.  
+ */
 public class Key56GeneratorImpl implements Key56Generator{
 
-    // each bytes actually consist of 7 bits, the highest one is unused (leave with zero value)  
+    /** each byte actually consist of 7 bits, the highest one is unused (leave with zero value) */  
     private byte[] key56;
-    // index(i) of current byte, that belongs to key56 (current byte is being built in the moment of execution) 
+    /** index(i) of current byte, that belongs to key56 (current byte is being built in the moment of execution) */
     int i56Byte = 0;
 
     public Key56GeneratorImpl() {
@@ -56,8 +58,12 @@ public class Key56GeneratorImpl implements Key56Generator{
         return key64;
     }
 
+    /**
+     * Lower 4 bytes of key56 are being built (ref. p5 Permutation table PC-1). 
+     * @param key64 - 64bit key, derived from original key as it is in grouping() method.
+     */
     private void buildBytes1234(byte[] key64) {
-        // index(i) of current bit, that belongs to current byte of key56 (current byte is being selected from key64 in the moment of execution) 
+        // index(i) of current bit, that belongs to current byte of key56
         int i56Bit = 0;
         // current byte, that is being built at the moment of execution 
         byte byte56 = 0;
@@ -75,8 +81,12 @@ public class Key56GeneratorImpl implements Key56Generator{
         }
     }
 
+    /**
+     * Higher 4 bytes of key56 are being built (ref. p5 Permutation table PC-1). 
+     * @param key64 - 64bit key, derived from original key as it is in grouping() method.
+     */
     private void buildBytes5678(byte[] key64) {
-        // index(i) of current bit, that belongs to current byte of key56 (current byte is being selected from key64 in the moment of execution) 
+        // index(i) of current bit, that belongs to current byte of key56
         int i56Bit = 0;
         // current byte, that is being built at the moment of execution 
         byte byte56 = 0;
@@ -93,6 +103,8 @@ public class Key56GeneratorImpl implements Key56Generator{
             byte56 = 0;
         }
 
+        // To build last byte of key56 is used (bit number 5 of bytes 3,2,1 from key64) 
+        // and (bit number 4 of bytes 4,3,2,1)
         for (int i = 0; i < 3; i++) {
             byte56 = (byte) (byte56 | (rewinder.nextForwardBit() << i56Bit++));
         }
