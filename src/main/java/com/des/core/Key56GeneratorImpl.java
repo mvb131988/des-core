@@ -72,7 +72,7 @@ public class Key56GeneratorImpl implements Key56Generator{
         for (int i = 0; i < 4; i++) {
 
             for (int j = 0; j < 7; j++) {
-                byte56 = (byte) (byte56 | (rewinder.nextBackwardBit() << i56Bit++));
+                byte56 = (byte) (byte56 | (rewinder.nextForwardBit() << i56Bit++));
             }
 
             key56[i56Byte++] = byte56;
@@ -95,7 +95,7 @@ public class Key56GeneratorImpl implements Key56Generator{
         for (int i = 0; i < 3; i++) {
 
             for (int j = 0; j < 7; j++) {
-                byte56 = (byte) (byte56 | (rewinder.nextForwardBit() << i56Bit++));
+                byte56 = (byte) (byte56 | (rewinder.nextBackwardBit() << i56Bit++));
             }
 
             key56[i56Byte++] = byte56;
@@ -106,11 +106,11 @@ public class Key56GeneratorImpl implements Key56Generator{
         // To build last byte of key56 is used (bit number 5 of bytes 3,2,1 from key64) 
         // and (bit number 4 of bytes 4,3,2,1)
         for (int i = 0; i < 3; i++) {
-            byte56 = (byte) (byte56 | (rewinder.nextForwardBit() << i56Bit++));
+            byte56 = (byte) (byte56 | (rewinder.nextBackwardBit() << i56Bit++));
         }
         rewinder = new Key64Rewinder(key64, 3, 3);
         for (int i = 0; i < 4; i++) {
-            byte56 = (byte) (byte56 | (rewinder.nextBackwardBit() << i56Bit++));
+            byte56 = (byte) (byte56 | (rewinder.nextForwardBit() << i56Bit++));
         }
         key56[i56Byte++] = byte56;
     }
